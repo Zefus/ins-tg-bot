@@ -1,9 +1,9 @@
 const config = require('config');
 
-module.exports = async (instagram, { telegram }) => {
+module.exports = (instagram, { telegram }) => {
   const stream = instagram.stream('users/self/media/recent');
 
-  stream.on('messages', messages => {
+  stream.on('messages', async (messages) => {
     try {
       switch (messages.type) {
 
