@@ -4,4 +4,5 @@ const instagram = require('./instagram.js');
 
 const bot = new Telegraf(process.env.BOT_TOKEN || config.get('telegram'));
 
+telegram(bot);
 instagram(bot);
