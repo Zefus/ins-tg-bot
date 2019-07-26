@@ -6,7 +6,7 @@ module.exports = async (instagram, { telegram }) => {
   stream.on('messages', messages => {
     try {
       switch (messages.type) {
-        case 'image':
+
         case 'image':
           const photoUrl = messages.images.standard_resolution.url;
           await telegram.sendPhoto(config.get('tg_user_id'), photoUrl,
@@ -15,7 +15,16 @@ module.exports = async (instagram, { telegram }) => {
             disable_notification: true,
           });
           break;
+
+        case 'video':
+          const videoURL = messages.videos.standard_resolution.url
+          await telegram.sendVideo(config.get('tg_user_id'), videoURL,
+          {
+            caption: `User ${messages.caption.from.username} posted:\n${messages.caption.text}`,
+            disable_notification: true,
+          });
           break;
+
         default:
         await telegram.sendMessage(
           config.get('tg_user_id'),
