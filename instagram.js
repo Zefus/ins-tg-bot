@@ -1,6 +1,20 @@
+const Instagram = require('node-instagram').default;
 const config = require('config');
 
-module.exports = (instagram, { telegram }) => {
+module.exports = (bot) => {
+  var instances = config.get('instagram');
+
+  instances.forEach((instance) => {
+    const instagram = new Instagram({
+      clientId: instance.clientId,
+      clientSecret: instance.clientSecret,
+      accessToken: instance.accessToken,
+    });
+    streamHandler(bot);
+  });
+}
+
+var streamHandler = ({ telegram }) => {
   const stream = instagram.stream('users/self/media/recent');
 
   stream.on('messages', async (messages) => {
@@ -68,4 +82,4 @@ module.exports = (instagram, { telegram }) => {
   stream.on('error', err => {
     console.log(err);
   });
-}
+};
