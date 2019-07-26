@@ -7,13 +7,14 @@ module.exports = async (instagram, { telegram }) => {
     try {
       switch (messages.type) {
         case 'image':
-        const url = messages.images.standard_resolution.url;
-        const text = messages.caption.text;
-        const username = messages.caption.from.username;
-        await telegram.sendPhoto(config.get('tg_user_id'), url, {
-          caption: 'User ${username} posted:\n${username}',
-          disable_notification: true,
-        });
+        case 'image':
+          const photoUrl = messages.images.standard_resolution.url;
+          await telegram.sendPhoto(config.get('tg_user_id'), photoUrl,
+          {
+            caption: `User ${messages.caption.from.username} posted:\n${messages.caption.text}`,
+            disable_notification: true,
+          });
+          break;
           break;
         default:
         await telegram.sendMessage(
