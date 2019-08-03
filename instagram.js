@@ -40,22 +40,22 @@ var streamHandler = ({ telegram }) => {
           break;
 
           case 'carousel':
-          const carouselMedia = messages.carousel_media;
-          const mediaGroup = [];
-          carouselMedia.forEach((m) => {
-            switch (m.type) {
+           const carouselMedia = messages.carousel_media;
+           const mediaGroup = [];
+           carouselMedia.forEach((m) => {
+             switch (m.type) {
               case 'image':
-              mediaGroup.push({
-                type: 'photo',
-                media: m.images.standard_resolution.url,
-              });
-                break;
+               mediaGroup.push({
+                 type: 'photo',
+                 media: m.images.standard_resolution.url,
+               });
+                 break;
               case 'video':
-              mediaGroup.push({
-                type: 'videos',
-                media: m.videos.standard_resolution.url,
-              });
-                break;
+               mediaGroup.push({
+                 type: 'videos',
+                 media: m.videos.standard_resolution.url,
+               });
+                 break;
               default:
               console.log(m.type);
             }

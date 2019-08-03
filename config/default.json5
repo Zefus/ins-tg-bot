@@ -1,4 +1,6 @@
 {
+  port: '',
+  url: '',
   tg_user_id: '',
   telegram: '',
   instagram: []
