@@ -27,4 +27,4 @@ node_modules/
 /data/
 
 # config
-./default.json5
+config/default.json5
