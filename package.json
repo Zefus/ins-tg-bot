@@ -4,12 +4,13 @@
   "description": "instagram bot receiver",
   "main": "bot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node bot.js"
   },
   "author": "Zefus",
   "license": "ISC",
   "dependencies": {
     "config": "^3.2.0",
+    "dotenv": "^8.0.0",
     "node-instagram": "^4.3.0",
     "telegraf": "^3.30.1"
   },

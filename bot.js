@@ -1,6 +1,7 @@
 const Telegraf = require('telegraf');
 const config = require('config');
 const instagram = require('./instagram.js');
+const telegram = require('./telegram.js');
 require('dotenv');
 
 const bot = new Telegraf(process.env.BOT_TOKEN || config.get('telegram'));

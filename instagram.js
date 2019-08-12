@@ -10,11 +10,11 @@ module.exports = (bot) => {
       clientSecret: instance.clientSecret,
       accessToken: instance.accessToken,
     });
-    streamHandler(bot);
+    streamHandler(bot, instagram);
   });
 }
 
-var streamHandler = ({ telegram }) => {
+var streamHandler = ({ telegram }, instagram) => {
   const stream = instagram.stream('users/self/media/recent');
 
   stream.on('messages', async (messages) => {
