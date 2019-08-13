@@ -19,9 +19,11 @@ var streamHandler = ({ telegram }, instagram) => {
 
   stream.on('messages', async (messages) => {
     try {
+      console.log(typeof(messages));
+      console.log(`messages.type: ${messages.type}`);
       switch (messages.type) {
 
-        case 'image':
+        case "image":
           const photoUrl = messages.images.standard_resolution.url;
           await telegram.sendPhoto(config.get('tg_user_id'), photoUrl,
           {
@@ -30,7 +32,7 @@ var streamHandler = ({ telegram }, instagram) => {
           });
           break;
 
-        case 'video':
+        case "video":
           const videoURL = messages.videos.standard_resolution.url
           await telegram.sendVideo(config.get('tg_user_id'), videoURL,
           {
@@ -39,7 +41,7 @@ var streamHandler = ({ telegram }, instagram) => {
           });
           break;
 
-          case 'carousel':
+          case "carousel":
            const carouselMedia = messages.carousel_media;
            const mediaGroup = [];
            carouselMedia.forEach((m) => {
@@ -50,7 +52,7 @@ var streamHandler = ({ telegram }, instagram) => {
                  media: m.images.standard_resolution.url,
                });
                  break;
-              case 'video':
+              case "video":
                mediaGroup.push({
                  type: 'videos',
                  media: m.videos.standard_resolution.url,
@@ -68,18 +70,17 @@ var streamHandler = ({ telegram }, instagram) => {
           break;
 
         default:
-        await telegram.sendMessage(
-          config.get('tg_user_id'),
-          'Wrong content type ${messages.type}',
-          Extra.notifications(false),
-        );
+        await telegram.sendMessage(config.get('tg_user_id'), `Wrong content type ${messages.type}`,
+        {
+          disable_notification: false,
+        });
       }
     } catch (error) {
-      console.error(error);
+      console.error(`Switch error: ${error}`);
     }
   });
 
   stream.on('error', err => {
-    console.log(err);
+    console.error(`Stream error: ${err}`);
   });
 };
