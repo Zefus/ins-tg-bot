@@ -19,30 +19,29 @@ var streamHandler = ({ telegram }, instagram) => {
 
   stream.on('messages', async (messages) => {
     try {
-      console.log(typeof(messages));
-      console.log(`messages.type: ${messages.type}`);
-      switch (messages.type) {
+      const lastRecent = messages[0];
+      switch (lastRecent.type) {
 
         case "image":
-          const photoUrl = messages.images.standard_resolution.url;
+          const photoUrl = lastRecent.images.standard_resolution.url;
           await telegram.sendPhoto(config.get('tg_user_id'), photoUrl,
           {
-            caption: `User ${messages.caption.from.username} posted:\n${messages.caption.text}`,
+            caption: `User ${lastRecent.caption.from.username} posted:\n${lastRecent.caption.text}`,
             disable_notification: true,
           });
           break;
 
         case "video":
-          const videoURL = messages.videos.standard_resolution.url
+          const videoURL = lastRecent.videos.standard_resolution.url
           await telegram.sendVideo(config.get('tg_user_id'), videoURL,
           {
-            caption: `User ${messages.caption.from.username} posted:\n${messages.caption.text}`,
+            caption: `User ${lastRecent.caption.from.username} posted:\n${lastRecent.caption.text}`,
             disable_notification: true,
           });
           break;
 
           case "carousel":
-           const carouselMedia = messages.carousel_media;
+           const carouselMedia = lastRecent.carousel_media;
            const mediaGroup = [];
            carouselMedia.forEach((m) => {
              switch (m.type) {
@@ -62,7 +61,7 @@ var streamHandler = ({ telegram }, instagram) => {
               console.log(m.type);
             }
           });
-        mediaGroup[0].caption = `User ${messages.caption.from.username} posted:\n ${messages.caption.text}`;
+        mediaGroup[0].caption = `User ${lastRecent.caption.from.username} posted:\n ${lastRecent.caption.text}`;
         await telegram.sendMediaGroup(config.get('tg_user_id'), mediaGroup,
         {
           disable_notification: false,
@@ -70,7 +69,7 @@ var streamHandler = ({ telegram }, instagram) => {
           break;
 
         default:
-        await telegram.sendMessage(config.get('tg_user_id'), `Wrong content type ${messages.type}`,
+        await telegram.sendMessage(config.get('tg_user_id'), `Ooops somithing wrong!`,
         {
           disable_notification: false,
         });
