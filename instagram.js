@@ -23,49 +23,71 @@ var streamHandler = ({ telegram }, instagram) => {
       switch (lastRecent.type) {
 
         case "image":
-          const photoUrl = lastRecent.images.standard_resolution.url;
-          await telegram.sendPhoto(config.get('tg_user_id'), photoUrl,
-          {
-            caption: `User ${lastRecent.caption.from.username} posted:\n${lastRecent.caption.text}`,
-            disable_notification: true,
-          });
+          try {
+            const photoUrl = lastRecent.images.standard_resolution.url;
+            await telegram.sendPhoto(config.get('tg_user_id'), photoUrl,
+            {
+              caption: `User ${lastRecent.caption.from.username} posted:\n${lastRecent.caption.text}`,
+              disable_notification: true,
+            });
+          } catch (error) {
+            throw new Error(`Image case error: ${error.message}`);
+          }
           break;
 
         case "video":
-          const videoURL = lastRecent.videos.standard_resolution.url
-          await telegram.sendVideo(config.get('tg_user_id'), videoURL,
-          {
-            caption: `User ${lastRecent.caption.from.username} posted:\n${lastRecent.caption.text}`,
-            disable_notification: true,
-          });
+          try {
+            const videoURL = lastRecent.videos.standard_resolution.url
+            await telegram.sendVideo(config.get('tg_user_id'), videoURL,
+            {
+              caption: `User ${lastRecent.caption.from.username} posted:\n${lastRecent.caption.text}`,
+              disable_notification: true,
+            });
+          } catch (error) {
+            throw new Error(`Video case error: ${error.message}`);
+          }
           break;
 
           case "carousel":
-           const carouselMedia = lastRecent.carousel_media;
-           const mediaGroup = [];
-           carouselMedia.forEach((m) => {
-             switch (m.type) {
-              case 'image':
-               mediaGroup.push({
-                 type: 'photo',
-                 media: m.images.standard_resolution.url,
-               });
-                 break;
-              case "video":
-               mediaGroup.push({
-                 type: 'videos',
-                 media: m.videos.standard_resolution.url,
-               });
-                 break;
-              default:
-              console.log(m.type);
-            }
-          });
-        mediaGroup[0].caption = `User ${lastRecent.caption.from.username} posted:\n ${lastRecent.caption.text}`;
-        await telegram.sendMediaGroup(config.get('tg_user_id'), mediaGroup,
-        {
-          disable_notification: false,
-        });
+          try {
+            const carouselMedia = lastRecent.carousel_media;
+            const mediaGroup = [];
+            carouselMedia.forEach((m) => {
+              switch (m.type) {
+               case "image":
+               try {
+                 mediaGroup.push({
+                   type: 'photo',
+                   media: m.images.standard_resolution.url,
+                 });
+               } catch (error) {
+                 throw new Error(`Image case error: ${error.message}`);
+               }
+                break;
+
+               case "video":
+               try {
+                 mediaGroup.push({
+                   type: 'videos',
+                   media: m.videos.standard_resolution.url,
+                 });
+               } catch (error) {
+                 throw new Error(`Video case error: ${error.message}`);
+               }
+                break;
+
+               default:
+               console.log(m.type);
+             }
+           });
+         mediaGroup[0].caption = `User ${lastRecent.caption.user.username} posted:\n ${lastRecent.caption.text}`;
+         await telegram.sendMediaGroup(config.get('tg_user_id'), mediaGroup,
+         {
+           disable_notification: false,
+         });
+          } catch (error) {
+            throw new Error(`Carousel case error: ${error.message}`);
+          }
           break;
 
         default:
