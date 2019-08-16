@@ -26,4 +26,4 @@ node_modules/
 /data/
 
 # config
-/config/default.json5
+telegram.js

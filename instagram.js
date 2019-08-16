@@ -68,7 +68,7 @@ var streamHandler = ({ telegram }, instagram) => {
                case "video":
                try {
                  mediaGroup.push({
-                   type: 'videos',
+                   type: 'video',
                    media: m.videos.standard_resolution.url,
                  });
                } catch (error) {
@@ -80,7 +80,8 @@ var streamHandler = ({ telegram }, instagram) => {
                console.log(m.type);
              }
            });
-         mediaGroup[0].caption = `User ${lastRecent.caption.user.username} posted:\n ${lastRecent.caption.text}`;
+         console.log(mediaGroup);
+         mediaGroup[0].caption = `User ${lastRecent.caption.from.username} posted:\n ${lastRecent.caption.text}`;
          await telegram.sendMediaGroup(config.get('tg_user_id'), mediaGroup,
          {
            disable_notification: false,
