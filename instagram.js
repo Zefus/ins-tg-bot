@@ -19,13 +19,14 @@ var streamHandler = ({ telegram }, instagram) => {
 
   stream.on('messages', async (messages) => {
     try {
+      const tg_user_id = process.env.TG_USER_ID || config.get('tg_user_id');
       const lastRecent = messages[0];
       switch (lastRecent.type) {
 
         case "image":
           try {
             const photoUrl = lastRecent.images.standard_resolution.url;
-            await telegram.sendPhoto(config.get('tg_user_id'), photoUrl,
+            await telegram.sendPhoto(tg_user_id, photoUrl,
             {
               caption: `User ${lastRecent.caption.from.username} posted:\n${lastRecent.caption.text}`,
               disable_notification: true,
@@ -38,7 +39,7 @@ var streamHandler = ({ telegram }, instagram) => {
         case "video":
           try {
             const videoURL = lastRecent.videos.standard_resolution.url
-            await telegram.sendVideo(config.get('tg_user_id'), videoURL,
+            await telegram.sendVideo(tg_user_id, videoURL,
             {
               caption: `User ${lastRecent.caption.from.username} posted:\n${lastRecent.caption.text}`,
               disable_notification: true,
@@ -82,7 +83,7 @@ var streamHandler = ({ telegram }, instagram) => {
            });
          console.log(mediaGroup);
          mediaGroup[0].caption = `User ${lastRecent.caption.from.username} posted:\n ${lastRecent.caption.text}`;
-         await telegram.sendMediaGroup(config.get('tg_user_id'), mediaGroup,
+         await telegram.sendMediaGroup(tg_user_id, mediaGroup,
          {
            disable_notification: false,
          });
@@ -92,7 +93,7 @@ var streamHandler = ({ telegram }, instagram) => {
           break;
 
         default:
-        await telegram.sendMessage(config.get('tg_user_id'), `Ooops somithing wrong!`,
+        await telegram.sendMessage(tg_user_id, `Ooops somithing wrong!`,
         {
           disable_notification: false,
         });
