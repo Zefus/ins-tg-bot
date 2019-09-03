@@ -38,7 +38,7 @@ var streamHandler = ({ telegram }, instagram) => {
 
         case "video":
           try {
-            const videoURL = lastRecent.videos.standard_resolution.url
+            const videoURL = lastRecent.videos.standard_resolution.url;
             await telegram.sendVideo(tg_user_id, videoURL,
             {
               caption: `User ${lastRecent.caption.from.username} posted:\n${lastRecent.caption.text}`,
