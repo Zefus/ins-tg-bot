@@ -8,6 +8,8 @@ const token = process.env.BOT_TOKEN || config.get('telegram');
 
 const url = process.env.URL || config.get('url');
 
+const port = process.env.PORT || config.get('port');
+
 const bot = new Telegraf(token,
 {
   webhookReply: true
@@ -18,6 +20,6 @@ bot.catch((err) => {
 });
 
 bot.telegram.setWebhook(`${url}/bot${token}`);
-bot.startWebhook(`bot${token}`, null, config.get('port'));
+bot.startWebhook(`bot${token}`, null, port);
 
 instagram(bot);
