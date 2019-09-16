@@ -1,0 +1,25 @@
+FROM node:10-slim as base
+
+RUN mkdir /bot
+
+WORKDIR /bot
+
+ADD package.json /bot/package.json
+ADD package-lock.json /bot/package-lock.json
+ADD config /bot/config
+
+ENV BOT_TOKEN = ""
+ENV URL = ""
+ENV PORT = ""
+ENV TG_USER_ID = ""
+
+RUN apt-get update &&\
+    npm install --production &&\
+    rm -rf /var/lib/apt/lists/*
+
+FROM base
+
+ADD bot.js /bot/bot.js
+ADD instagram.js /bot/instagram.js
+
+RUN npm start
