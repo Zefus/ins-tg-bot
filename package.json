@@ -9,7 +9,7 @@
   "author": "Zefus",
   "license": "ISC",
   "dependencies": {
-    "config": "^3.2.0",
+    "config": "^3.3.8",
     "dotenv": "^8.0.0",
     "node-instagram": "^4.3.0",
     "telegraf": "^3.30.1"
